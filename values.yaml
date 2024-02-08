@@ -4,6 +4,8 @@ replicas: 2
 image: ${artifact.metadata.image}
 dockercfg: ${artifact.source.dockerconfig}
 
+date: "<+pipeline.variables.date>"
+
 createNamespace: true
 namespace: ${serviceVariable.namespace}
 
