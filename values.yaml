@@ -1,1 +1,1 @@
-date: "<+pipeline.variables.date>"
+date: <+pipeline.variables.date>
