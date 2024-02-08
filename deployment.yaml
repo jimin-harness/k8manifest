@@ -3,22 +3,22 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   labels:
-    app:nginx
+    app: nginx  # Added a space after the colon for correct YAML syntax.
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: nginx
-    template:
-      metadata:
-        labels:
-          app: nginx
-        spec:
-          containers:
-          - name: nginx
-          image: {{.Values.image}}
-          ports:
-          - containerPort: 80
-          env:
-          - name: DATE
-          value: "{{.Values.env}}"
+  template:  # This line was correctly indented; it aligns with 'selector' and 'replicas' under 'spec'.
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ .Values.image }}"  # Ensure there are spaces inside the curly braces for readability.
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATE
+          value: "{{ .Values.env }}"  # Ensure there are spaces inside the curly braces for readability.
