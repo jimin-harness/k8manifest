@@ -1,0 +1,68 @@
+pipeline:
+  name: k8bluegreen
+  identifier: k8bluegreen
+  projectIdentifier: Glitch
+  orgIdentifier: X
+  tags: {}
+  stages:
+    - stage:
+        name: bluegreendeploy
+        identifier: bluegreendeploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: bgsrv
+          environment:
+            environmentRef: k8bgEnv
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: k8sbgtest
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo <+pipeline.variables.date>
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+              - step:
+                  type: K8sRollingDeploy
+                  name: K8sRollingDeploy_1
+                  identifier: K8sRollingDeploy_1
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+                  timeout: 10m
+            rollbackSteps:
+              - step:
+                  name: Swap primary with stage service
+                  identifier: rollbackBgSwapServices
+                  type: K8sBGSwapServices
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        delegateSelectors:
+          - kubernetes-delegate
+  variables:
+    - name: date
+      type: String
+      description: ""
+      required: false
+      value: <+input>
