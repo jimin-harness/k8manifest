@@ -21,4 +21,4 @@ spec:
         - containerPort: 80
         env:
         - name: DATE
-          value: "{{ .Values.date }}"  # Ensure there are spaces inside the curly braces for readability.
+          value: "{{ .Values.env }}"  # Ensure there are spaces inside the curly braces for readability.
