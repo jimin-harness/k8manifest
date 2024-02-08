@@ -1,1 +1,1 @@
-env: <+pipeline.variables.date>
+env: "<+pipeline.variables.date>"
